@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "R": {
+      "item": "create:polished_rose_quartz"
+    },
+    "C": {
+      "item": "create_redstone_additions:polished_cyan_quartz"
+    },
+    "D": {
+      "tag": "forge:dusts/redstone"
+    },
+    "I": {
+      "tag": "forge:ingots/copper"
+    }
+  },
+  "pattern": [
+    "RDR",
+    "C C",
+    "III"
+  ],
+  "result": {
+    "item": "create_redstone_additions:disjunctor"
+  },
+  "show_notification": true
+}

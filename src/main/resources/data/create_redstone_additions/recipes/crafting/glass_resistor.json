@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "R": {
+      "item": "minecraft:tinted_glass"
+    },
+    "D": {
+      "tag": "forge:dusts/redstone"
+    },
+    "I": {
+      "tag": "forge:ingots/copper"
+    }
+  },
+  "pattern": [
+    "DRD",
+    "III"
+  ],
+  "result": {
+    "item": "create_redstone_additions:glass_resistor"
+  },
+  "show_notification": true
+}

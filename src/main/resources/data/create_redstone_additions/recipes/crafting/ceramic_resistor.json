@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "R": {
+      "item": "minecraft:terracotta"
+    },
+    "D": {
+      "tag": "forge:dusts/redstone"
+    },
+    "I": {
+      "tag": "forge:ingots/copper"
+    }
+  },
+  "pattern": [
+    "DRD",
+    "III"
+  ],
+  "result": {
+    "item": "create_redstone_additions:ceramic_resistor"
+  },
+  "show_notification": true
+}

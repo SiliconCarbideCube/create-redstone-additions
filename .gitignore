@@ -1,0 +1,17 @@
+/build/
+.gradle/
+.idea/
+*.iml
+run/
+run-data/
+*.log
+*.lck
+.DS_Store
+Thumbs.db
+*.class
+gradlew
+gradlew.bat
+*.env
+*.properties
+*.tmp
+*.swp
