@@ -1,0 +1,155 @@
+plugins {
+    id 'fabric-loom' version '1.11-SNAPSHOT'
+    id 'maven-publish'
+}
+
+version = "${project.mod_version}+mc${project.minecraft_version}"
+group = project.maven_group
+
+base {
+    archivesName = project.archives_base_name
+}
+
+loom {
+    splitEnvironmentSourceSets()
+
+    mods {
+        "create_redstone_additions" {
+            sourceSet sourceSets.main
+            sourceSet sourceSets.client
+        }
+    }
+}
+
+fabricApi {
+    configureDataGeneration {
+        client = true
+    }
+}
+
+repositories {
+    maven { url "https://maven.fabricmc.net/" }
+    maven { url "https://mvn.devos.one/snapshots/" } // Create, Registrate, Milk Lib, Dripstone Fluid Lib
+    maven { url "https://mvn.devos.one/releases/" }  // Porting Lib
+    maven { url "https://maven.createmod.net/" }     // Flywheel, Ponder
+    maven { url "https://raw.githubusercontent.com/Fuzss/modresources/main/maven" } // Forge Config API Port
+    maven { url "https://maven.jamieswhiteshirt.com/libs-release" } // Reach Entity Attributes
+    maven { url "https://modmaven.dev" } // JEI
+
+    mavenCentral()
+}
+
+
+dependencies {
+    // To change the versions see the gradle.properties file
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    mappings loom.officialMojangMappings()
+    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+
+    // Create
+    modImplementation "com.simibubi.create:create-fabric-${minecraft_version}:${create_version}+mc${minecraft_version}-${create_build_no}"
+
+    // Registrate
+    modImplementation "com.tterrag.registrate_fabric:Registrate:${registrate_version}"
+
+    // Flywheel
+    modImplementation "dev.engine-room.flywheel:flywheel-fabric-${minecraft_version}:${flywheel_version}"
+    modImplementation "dev.engine-room.flywheel:flywheel-fabric-api-${minecraft_version}:${flywheel_version}"
+
+    // Ponder
+    modImplementation "net.createmod.ponder:Ponder-Fabric-${minecraft_version}:${ponder_version}"
+    modImplementation "net.createmod.ponder:Ponder-Common-${minecraft_version}:${ponder_version}"
+
+    // Milk Lib + Dripstone Fluid Lib
+    modImplementation "io.github.tropheusj:milk-lib:${milk_version}"
+    modImplementation "io.github.tropheusj:dripstone-fluid-lib:${dripstone_fluid_version}"
+
+    // Porting Lib (all modules you need)
+    modImplementation "io.github.fabricators_of_create.Porting-Lib:base:${porting_lib_version}"
+    modImplementation "io.github.fabricators_of_create.Porting-Lib:extensions:${porting_lib_version}"
+    modImplementation "io.github.fabricators_of_create.Porting-Lib:entity:${porting_lib_version}"
+    modImplementation "io.github.fabricators_of_create.Porting-Lib:networking:${porting_lib_version}"
+    modImplementation "io.github.fabricators_of_create.Porting-Lib:tags:${porting_lib_version}"
+    modImplementation "io.github.fabricators_of_create.Porting-Lib:transfer:${porting_lib_version}"
+    modImplementation "io.github.fabricators_of_create.Porting-Lib:models:${porting_lib_version}"
+    modImplementation "io.github.fabricators_of_create.Porting-Lib:model_generators:${porting_lib_version}"
+    modImplementation "io.github.fabricators_of_create.Porting-Lib:tool_actions:${porting_lib_version}"
+    modImplementation "io.github.fabricators_of_create.Porting-Lib:client_events:${porting_lib_version}"
+    modImplementation "io.github.fabricators_of_create.Porting-Lib:brewing:${porting_lib_version}"
+    modImplementation "io.github.fabricators_of_create.Porting-Lib:obj_loader:${porting_lib_version}"
+    modImplementation "io.github.fabricators_of_create.Porting-Lib:accessors:${porting_lib_version}"
+
+    // Forge Config API Port
+    modImplementation "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${forge_config_version}"
+
+    // Reach Entity Attributes
+    modImplementation "com.jamieswhiteshirt:reach-entity-attributes:${rea_version}"
+
+    // JEI
+    modCompileOnlyApi("mezz.jei:jei-${minecraft_version}-fabric-api:${jei_version}")
+    modRuntimeOnly("mezz.jei:jei-${minecraft_version}-fabric:${jei_version}")
+
+}
+
+processResources {
+    inputs.property "version", project.version
+    inputs.property "minecraft_version", project.minecraft_version
+    inputs.property "loader_version", project.loader_version
+    filteringCharset "UTF-8"
+
+    filesMatching("fabric.mod.json") {
+        expand "version": project.version,
+                "minecraft_version": project.minecraft_version,
+                "loader_version": project.loader_version
+    }
+}
+
+def targetJavaVersion = 17
+tasks.withType(JavaCompile).configureEach {
+    // ensure that the encoding is set to UTF-8, no matter what the system default is
+    // this fixes some edge cases with special characters not displaying correctly
+    // see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
+    // If Javadoc is generated, this must be specified in that task too.
+    it.options.encoding = "UTF-8"
+    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
+        it.options.release.set(targetJavaVersion)
+    }
+}
+
+java {
+    def javaVersion = JavaVersion.toVersion(targetJavaVersion)
+    if (JavaVersion.current() < javaVersion) {
+        toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
+    }
+    // Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
+    // if it is present.
+    // If you remove this line, sources will not be generated.
+    withSourcesJar()
+}
+
+jar {
+    from("LICENSE") {
+        rename { "${it}_${project.archives_base_name}" }
+    }
+}
+
+// configure the maven publication
+publishing {
+    publications {
+        create("mavenJava", MavenPublication) {
+            artifactId = project.archives_base_name
+            from components.java
+        }
+    }
+
+    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
+    repositories {
+        // Add repositories to publish to here.
+        // Notice: This block does NOT have the same function as the block in the top level.
+        // The repositories here will be used for publishing your artifact, not for
+        // retrieving dependencies.
+    }
+}

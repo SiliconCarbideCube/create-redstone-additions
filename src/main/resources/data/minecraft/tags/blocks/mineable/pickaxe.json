@@ -1,0 +1,14 @@
+{
+  "values": [
+    "create_redstone_additions:crossroad",
+    "create_redstone_additions:diode",
+    "create_redstone_additions:golden_resistor",
+    "create_redstone_additions:iron_resistor",
+    "create_redstone_additions:ceramic_resistor",
+    "create_redstone_additions:glass_resistor",
+    "create_redstone_additions:disjunctor",
+    "create_redstone_additions:exclusive_disjunctor",
+    "create_redstone_additions:conjunctor",
+    "create_redstone_additions:inverter"
+  ]
+}

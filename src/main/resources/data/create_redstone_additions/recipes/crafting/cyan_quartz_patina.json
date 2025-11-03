@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "tag": "forge:gems/quartz" },
+    { "item": "copperative:patina" },
+    { "item": "copperative:patina" },
+    { "item": "copperative:patina" },
+    { "item": "copperative:patina" },
+    { "item": "copperative:patina" },
+    { "item": "copperative:patina" },
+    { "item": "copperative:patina" },
+    { "item": "copperative:patina" }
+  ],
+  "result": {
+    "item": "create_redstone_additions:cyan_quartz"
+  }
+}

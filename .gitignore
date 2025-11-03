@@ -1,0 +1,18 @@
+# Gradle build output
+/build/
+.gradle/
+.idea/
+*.iml
+run/
+run-data/
+*.log
+*.lck
+*.class
+gradlew
+gradlew.bat
+.DS_Store
+Thumbs.db
+*.tmp
+*.swp
+*.env
+*.properties

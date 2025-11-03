@@ -1,0 +1,11 @@
+{
+  "type": "create:mixing",
+  "ingredients": [
+    { "item": "create:copper_nugget" },
+    { "fluid": "minecraft:water", "amount": 10 }
+  ],
+  "results": [
+    { "item": "create_redstone_additions:oxidized_copper_nugget" }
+  ],
+  "heatRequirement": "none"
+}

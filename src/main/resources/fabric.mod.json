@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "id": "create_redstone_additions",
+  "version": "${version}",
+  "name": "Create: Redstone Additions Fabric",
+  "description": "Mod that adds logic gates and other redstone components.",
+  "authors": [
+    "Slimik42",
+    "SiliconCarbideCube"
+  ],
+  "contact": {},
+  "license": "AGPL-3.0",
+  "icon": "assets/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "dev.siliconcarbidecube.create_redstone_additions.client.CreateRedstoneAdditionsClient"
+    ],
+    "main": [
+      "dev.siliconcarbidecube.create_redstone_additions.CreateRedstoneAdditions"
+    ]
+  },
+  "mixins": [
+    "create_redstone_additions.mixins.json",
+    {
+      "config": "create_redstone_additions.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}",
+    "create" : "6.0.7.0+build.1728-mc1.20.1"
+  }
+}

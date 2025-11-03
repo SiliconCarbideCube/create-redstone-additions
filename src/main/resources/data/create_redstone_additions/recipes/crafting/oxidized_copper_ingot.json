@@ -1,0 +1,11 @@
+{
+  "type": "create:mixing",
+  "ingredients": [
+    { "item": "minecraft:copper_ingot" },
+    { "fluid": "minecraft:water", "amount": 50 }
+  ],
+  "results": [
+    { "item": "create_redstone_additions:oxidized_copper_ingot" }
+  ],
+  "heatRequirement": "none"
+}
