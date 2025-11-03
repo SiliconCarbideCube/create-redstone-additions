@@ -1,4 +1,4 @@
-### Select the desired branch for Forge and Fabric to view their source code.
+### Select the desired branch for Forge or Fabric to view their source code.
 
 # About Create: Redstone Additions
 
