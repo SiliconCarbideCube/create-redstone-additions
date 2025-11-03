@@ -45,6 +45,8 @@ By default, the mod uses Rose Quartz from the [Create](https://modrinth.com/mod/
 
 > Obviously as always. Includes fully detailed Ponder screens showcasing functions of each block.
 
+![Example Ponder](https://cdn.modrinth.com/data/cached_images/ab03c00d3115bca87976a1c62d518bde0f04265c.png)
+
 ## Additional Info
 You can use JEI/REI/EMI to view recipes. Also includes a minor crafting recipe for [Copperative](https://modrinth.com/mod/copperative). But you don't need it to play the game. And it's only for Forge! You will have alternative recipes in place.
 
