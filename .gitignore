@@ -12,6 +12,5 @@ Thumbs.db
 gradlew
 gradlew.bat
 *.env
-*.properties
 *.tmp
 *.swp
