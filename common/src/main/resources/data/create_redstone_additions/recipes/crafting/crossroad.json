@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "D": {
+      "tag": "forge:dusts/redstone"
+    },
+    "I": {
+      "tag": "forge:ingots/copper"
+    }
+  },
+  "pattern": [
+    " D ",
+    "DID",
+    "IDI"
+  ],
+  "result": {
+    "item": "create_redstone_additions:crossroad"
+  },
+  "show_notification": true
+}

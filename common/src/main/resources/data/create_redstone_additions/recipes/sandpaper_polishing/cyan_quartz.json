@@ -1,0 +1,13 @@
+{
+  "type": "create:sandpaper_polishing",
+  "ingredients": [
+    {
+      "item": "create_redstone_additions:cyan_quartz"
+    }
+  ],
+  "results": [
+    {
+      "item": "create_redstone_additions:polished_cyan_quartz"
+    }
+  ]
+}

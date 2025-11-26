@@ -1,0 +1,102 @@
+plugins {
+    id 'com.github.johnrengelman.shadow'
+}
+
+loom {
+//    forge {
+//        mixinConfig "create_redstone_additions.mixins.json"
+//    }
+
+    runs {
+        client {
+            property("mixin.env.remapRefMap", "true")
+            property("mixin.env.refMapRemappingFile", "${projectDir}/build/createSrgToMcp/output.srg")
+        }
+    }
+}
+
+architectury {
+    platformSetupLoomIde()
+    forge()
+}
+
+configurations {
+    common {
+        canBeResolved = true
+        canBeConsumed = false
+    }
+    compileClasspath.extendsFrom common
+    runtimeClasspath.extendsFrom common
+    developmentForge.extendsFrom common
+
+    // Files in this configuration will be bundled into your mod using the Shadow plugin.
+    // Don't use the `shadow` configuration from the plugin itself as it's meant for excluding files.
+    shadowBundle {
+        canBeResolved = true
+        canBeConsumed = false
+    }
+}
+
+repositories {
+    // Create
+    maven { url "https://maven.createmod.net" } // Create, Ponder, Flywheel
+    maven { url "https://maven.tterrag.com" } // Registrate
+    maven { url "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/" }
+
+    // JEI
+    maven { url "https://maven.blamejared.com/" }
+    maven { url "https://modmaven.dev" }
+
+    mavenCentral()
+}
+
+dependencies {
+    forge "net.minecraftforge:forge:$rootProject.forge_version"
+
+    modImplementation "dev.architectury:architectury-forge:$rootProject.architectury_api_version"
+
+    common(project(path: ':common', configuration: 'namedElements')) { transitive false }
+    shadowBundle project(path: ':common', configuration: 'transformProductionForge')
+
+    // Create
+    modImplementation("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") {
+        transitive = false
+    }
+
+    // Ponder (Forge variant)
+    modImplementation("net.createmod.ponder:Ponder-Forge-${minecraft_version}:${ponder_version}")
+
+    // Flywheel (Forge variant)
+    modCompileOnly("dev.engine-room.flywheel:flywheel-forge-api-${minecraft_version}:${flywheel_version}")
+    modRuntimeOnly("dev.engine-room.flywheel:flywheel-forge-${minecraft_version}:${flywheel_version}")
+
+    // Registrate
+    modImplementation("com.tterrag.registrate:Registrate:${registrate_version}")
+
+    // Mixin Extras
+    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.4.1"))
+    implementation("io.github.llamalad7:mixinextras-forge:0.4.1")
+
+    // JEI (Forge variant)
+    modRuntimeOnly("mezz.jei:jei-${minecraft_version}-forge:${jei_version}")
+}
+
+processResources {
+    inputs.property 'version', project.version
+
+    filesMatching('META-INF/mods.toml') {
+        expand version: project.version
+    }
+
+}
+
+shadowJar {
+    configurations = [project.configurations.shadowBundle]
+    archiveClassifier = 'dev-shadow'
+
+    relocate 'dev.architectury', 'dev.siliconcarbidecube.architectury'
+}
+
+remapJar {
+    input.set shadowJar.archiveFile
+}
