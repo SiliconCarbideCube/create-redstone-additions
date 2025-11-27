@@ -3,10 +3,10 @@
   "category": "redstone",
   "key": {
     "D": {
-      "tag": "forge:dusts/redstone"
+      "tag": "minecraft:redstone"
     },
     "I": {
-      "tag": "forge:ingots/copper"
+      "tag": "create_redstone_additions:base_stones"
     }
   },
   "pattern": [

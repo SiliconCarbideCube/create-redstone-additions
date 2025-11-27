@@ -128,7 +128,6 @@ public class ResistorIV extends DiodeBlock {
         BlockPos blockposF = pos.relative(directionF.getOpposite());
         BlockPos blockposB = pos.relative(directionB.getOpposite());
 
-        // No ForgeEventFactory in Fabric
         level.neighborChanged(blockposF, this, pos);
         level.updateNeighborsAtExceptFromFacing(blockposF, this, directionF);
 

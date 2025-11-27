@@ -3,9 +3,9 @@ plugins {
 }
 
 loom {
-//    forge {
-//        mixinConfig "create_redstone_additions.mixins.json"
-//    }
+    forge {
+        mixinConfig "create_redstone_additions.mixins.json"
+    }
 
     runs {
         client {

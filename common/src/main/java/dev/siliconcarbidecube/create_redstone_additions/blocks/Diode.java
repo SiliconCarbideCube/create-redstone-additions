@@ -23,7 +23,6 @@ import org.jetbrains.annotations.NotNull;
 
 public class Diode extends DiodeBlock {
     public static final IntegerProperty POWER = BlockStateProperties.POWER;
-    //public static final IntegerProperty TEST = IntegerProperty.create("A", 0, 15);
 
     public Diode() {
         super(

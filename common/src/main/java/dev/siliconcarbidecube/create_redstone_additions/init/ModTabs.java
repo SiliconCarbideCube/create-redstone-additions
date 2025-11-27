@@ -14,7 +14,7 @@ public class ModTabs {
     public static final DeferredRegister<CreativeModeTab> REGISTER =
             DeferredRegister.create(MOD_ID, Registries.CREATIVE_MODE_TAB);
 
-    public static final RegistrySupplier<CreativeModeTab> MY_TAB = REGISTER.register(
+    public static final RegistrySupplier<CreativeModeTab> CREATE_REDSTONE_ADDITIONS_TAB = REGISTER.register(
             "create_redstone_additions_tab",
             () -> CreativeTabRegistry.create(builder -> {
                 builder.title(Component.translatable("tab.create_redstone_additions"))
@@ -23,19 +23,19 @@ public class ModTabs {
                             // Block Items
                             output.accept(ModItems.DIODE_BLOCK_ITEM.get());
                             output.accept(ModItems.CROSSROAD_BLOCK_ITEM.get());
+                            output.accept(ModItems.INVERTER_BLOCK_ITEM.get());
                             output.accept(ModItems.GOLDEN_RESISTOR_BLOCK_ITEM.get());
                             output.accept(ModItems.IRON_RESISTOR_BLOCK_ITEM.get());
                             output.accept(ModItems.CERAMIC_RESISTOR_BLOCK_ITEM.get());
                             output.accept(ModItems.GLASS_RESISTOR_BLOCK_ITEM.get());
                             output.accept(ModItems.CONJUNCTOR_BLOCK_ITEM.get());
                             output.accept(ModItems.DISJUNCTOR_BLOCK_ITEM.get());
-                            output.accept(ModItems.INVERTER_BLOCK_ITEM.get());
 
                             // Items
                             output.accept(ModItems.CYAN_QUARTZ.get());
+                            output.accept(ModItems.QUARTZ_SEMICONDUCTOR.get());
                             output.accept(ModItems.POLISHED_CYAN_QUARTZ.get());
-                            output.accept(ModItems.OXIDIZED_COPPER_INGOT.get());
-                            output.accept(ModItems.OXIDIZED_COPPER_NUGGET.get());
+                            output.accept(ModItems.VERDIGRIS.get());
                         });
             })
     );

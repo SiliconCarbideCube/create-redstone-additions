@@ -2,7 +2,9 @@
   "ambientocclusion": false,
   "textures": {
     "particle": "create_redstone_additions:block/resistor_terracotta_off",
-    "top": "create_redstone_additions:block/resistor_terracotta_off"
+    "top": "create_redstone_additions:block/resistor_terracotta_off",
+    "base": "create_redstone_additions:block/base"
+
   },
   "elements": [
     {
@@ -22,7 +24,7 @@
         },
         "west": { "uv": [0, 2, 16, 0], "texture": "#top", "cullface": "west" },
         "up": { "uv": [0, 0, 16, 16], "texture": "#top" },
-        "down": { "uv": [0, 0, 16, 16], "texture": "#top", "cullface": "down" }
+        "down": { "uv": [0, 0, 16, 16], "texture": "#base", "cullface": "down" }
       }
     },
     {

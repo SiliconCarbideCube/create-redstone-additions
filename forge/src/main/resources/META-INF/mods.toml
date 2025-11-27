@@ -33,3 +33,10 @@ mandatory = true
 versionRange = "[9.2.14,)"
 ordering = "AFTER"
 side = "BOTH"
+
+[[dependencies.create_redstone_additions]]
+modId = "create"
+mandatory = true
+versionRange = "[6.0.7.0,)"
+ordering = "AFTER"
+side = "BOTH"

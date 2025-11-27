@@ -3,20 +3,17 @@
   "category": "redstone",
   "key": {
     "R": {
-      "item": "create:polished_rose_quartz"
-    },
-    "C": {
-      "item": "create_redstone_additions:polished_cyan_quartz"
+      "item": "minecraft:redstone"
     },
     "D": {
-      "tag": "forge:dusts/redstone"
+      "tag": "create_redstone_additions:quartz_semiconductor"
     },
     "I": {
-      "tag": "forge:ingots/copper"
+      "tag": "create_redstone_additions:base_stones"
     }
   },
   "pattern": [
-    "DCR",
+    "RDR",
     "III"
   ],
   "result": {

@@ -1,0 +1,12 @@
+{
+  "type": "create:deploying",
+  "ingredients": [
+    { "tag": "minecraft:axes" },
+    { "tag": "create_redstone_additions:oxidized_copper_variants" }
+  ],
+  "results": [
+    {
+      "item": "create_redstone_additions:verdigris"
+    }
+  ]
+}

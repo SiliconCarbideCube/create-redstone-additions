@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "package": "dev.siliconcarbidecube.create_redstone_additions.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "VerdigrisDrop"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

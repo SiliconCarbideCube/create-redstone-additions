@@ -18,6 +18,9 @@ public class ModBlocks {
     public static final RegistrySupplier<Block> CROSSROAD_BLOCK =
             REGISTRY.register("crossroad", Crossroad::new);
 
+    public static final RegistrySupplier<Block> INVERTER_BLOCK =
+            REGISTRY.register("inverter", Inverter::new);
+
     public static final RegistrySupplier<Block> GOLDEN_RESISTOR_BLOCK =
             REGISTRY.register("golden_resistor", ResistorI::new);
 
@@ -29,9 +32,6 @@ public class ModBlocks {
 
     public static final RegistrySupplier<Block> GLASS_RESISTOR_BLOCK =
             REGISTRY.register("glass_resistor", ResistorIV::new);
-
-    public static final RegistrySupplier<Block> INVERTER_BLOCK =
-            REGISTRY.register("inverter", Inverter::new);
 
     public static final RegistrySupplier<Block> CONJUNCTOR_BLOCK =
             REGISTRY.register("conjunctor", Conjunctor::new);

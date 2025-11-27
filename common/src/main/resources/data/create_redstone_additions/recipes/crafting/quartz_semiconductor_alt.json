@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ABC"
+  ],
+  "key": {
+    "A": {
+      "item": "create_redstone_additions:polished_cyan_quartz"
+    },
+    "B": {
+      "item": "minecraft:gold_ingot"
+    },
+    "C": {
+      "item": "create:polished_rose_quartz"
+    }
+  },
+  "result": {
+    "item": "create_redstone_additions:quartz_semiconductor",
+    "count": 2
+  }
+}

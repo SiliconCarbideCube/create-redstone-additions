@@ -13,7 +13,6 @@ public class DiodeScene {
     public static void diode(SceneBuilder scene, SceneBuildingUtil util) {
         System.out.println("Diode scene is running!");
 
-
         scene.title("diode", "The Diode");
         scene.configureBasePlate(0, 0, 7);
         scene.showBasePlate();
@@ -53,7 +52,7 @@ public class DiodeScene {
 
         scene.overlay().showText(50)
                 .colored(PonderPalette.RED)
-                .text("When reversed, rose quartz cathode is facing the signal direction thus, blocking it.")
+                .text("When reversed, rose quartz node is facing the signal direction thus, blocking it.")
                 .placeNearTarget()
                 .pointAt(util.vector().blockSurface(diodePos, Direction.UP));
         scene.idle(60);

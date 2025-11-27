@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {"base": "create_redstone_additions:block/base",
+    "layer0": "create_redstone_additions:item/quartz_semiconductor"
+  }
+}

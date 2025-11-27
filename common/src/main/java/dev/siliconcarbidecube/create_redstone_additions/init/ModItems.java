@@ -2,10 +2,7 @@ package dev.siliconcarbidecube.create_redstone_additions.init;
 
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
-import dev.siliconcarbidecube.create_redstone_additions.items.CyanQuartz;
-import dev.siliconcarbidecube.create_redstone_additions.items.OxidizedCopperIngot;
-import dev.siliconcarbidecube.create_redstone_additions.items.OxidizedCopperNugget;
-import dev.siliconcarbidecube.create_redstone_additions.items.PolishedCyanQuartz;
+import dev.siliconcarbidecube.create_redstone_additions.items.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -22,6 +19,10 @@ public class ModItems {
     public static final RegistrySupplier<Item> CROSSROAD_BLOCK_ITEM =
             REGISTRY.register("crossroad", () ->
                     new BlockItem(ModBlocks.CROSSROAD_BLOCK.get(), new Item.Properties()));
+
+    public static final RegistrySupplier<Item> INVERTER_BLOCK_ITEM =
+            REGISTRY.register("inverter", () ->
+                    new BlockItem(ModBlocks.INVERTER_BLOCK.get(), new Item.Properties()));
 
     public static final RegistrySupplier<Item> GOLDEN_RESISTOR_BLOCK_ITEM =
             REGISTRY.register("golden_resistor", () ->
@@ -47,10 +48,6 @@ public class ModItems {
             REGISTRY.register("disjunctor", () ->
                     new BlockItem(ModBlocks.DISJUNCTOR_BLOCK.get(), new Item.Properties()));
 
-    public static final RegistrySupplier<Item> INVERTER_BLOCK_ITEM =
-            REGISTRY.register("inverter", () ->
-                    new BlockItem(ModBlocks.INVERTER_BLOCK.get(), new Item.Properties()));
-
     // Items
     public static final RegistrySupplier<Item> CYAN_QUARTZ =
             REGISTRY.register("cyan_quartz", () ->
@@ -60,13 +57,13 @@ public class ModItems {
             REGISTRY.register("polished_cyan_quartz", () ->
                     new PolishedCyanQuartz(new Item.Properties()));
 
-    public static final RegistrySupplier<Item> OXIDIZED_COPPER_INGOT =
-            REGISTRY.register("oxidized_copper_ingot", () ->
-                    new OxidizedCopperIngot(new Item.Properties()));
+    public static final RegistrySupplier<Item> QUARTZ_SEMICONDUCTOR =
+            REGISTRY.register("quartz_semiconductor", () ->
+                    new QuartzSemiconductor(new Item.Properties()));
 
-    public static final RegistrySupplier<Item> OXIDIZED_COPPER_NUGGET =
-            REGISTRY.register("oxidized_copper_nugget", () ->
-                    new OxidizedCopperNugget(new Item.Properties()));
+    public static final RegistrySupplier<Item> VERDIGRIS =
+            REGISTRY.register("verdigris", () ->
+                    new Verdigris(new Item.Properties()));
 
     public static void register() {
         REGISTRY.register();
