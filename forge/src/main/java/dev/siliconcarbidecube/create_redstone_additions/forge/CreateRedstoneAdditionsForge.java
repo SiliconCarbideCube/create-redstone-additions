@@ -10,6 +10,7 @@ import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraft.world.level.block.RepeaterBlock;
 
 @Mod(CreateRedstoneAdditions.MOD_ID)
 public final class CreateRedstoneAdditionsForge {

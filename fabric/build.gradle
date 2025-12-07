@@ -100,7 +100,9 @@ shadowJar {
     configurations = [project.configurations.shadowBundle]
     archiveClassifier = 'dev-shadow'
 
-    relocate 'dev.architectury', 'dev.siliconcarbidecube.architectury'
+    // Bundling Architectury
+    // relocate 'dev.architectury', 'dev.siliconcarbidecube.architectury'
+
 }
 
 remapJar {

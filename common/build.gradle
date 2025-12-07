@@ -12,9 +12,13 @@ artifacts {
     transformProductionFabric jar
 }
 
+
 repositories {
     maven { url "https://maven.createmod.net/" }     // Ponder
     maven { url "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/" }
+
+    // SpongePowered
+    maven {url "https://repo.spongepowered.org/maven" }
 }
 
 dependencies {
@@ -28,5 +32,7 @@ dependencies {
     // Ponder (Common)
     modImplementation "net.createmod.ponder:Ponder-Common-${minecraft_version}:${ponder_version}"
 
+    // Mixins
+    // annotationProcessor "org.spongepowered:mixin:0.8.5:processor"
 
 }

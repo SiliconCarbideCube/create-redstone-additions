@@ -13,6 +13,9 @@ Mod that adds logic gates and other redstone components.
 '''
 logoFile = "icon.png"
 
+#[[mixins]]
+#config="create_redstone_additions.mixins.json"
+
 [[dependencies.create_redstone_additions]]
 modId = "forge"
 mandatory = true
@@ -30,7 +33,7 @@ side = "BOTH"
 [[dependencies.create_redstone_additions]]
 modId = "architectury"
 mandatory = true
-versionRange = "[9.2.14,)"
+versionRange = "[9.0.8,)"
 ordering = "AFTER"
 side = "BOTH"
 
