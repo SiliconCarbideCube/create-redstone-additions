@@ -3,7 +3,7 @@
   "category": "redstone",
   "key": {
     "D": {
-      "tag": "minecraft:redstone"
+      "item": "minecraft:redstone"
     },
     "I": {
       "tag": "create_redstone_additions:base_stones"

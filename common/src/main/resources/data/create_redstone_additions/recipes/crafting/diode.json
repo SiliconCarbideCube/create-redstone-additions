@@ -6,7 +6,7 @@
       "item": "minecraft:redstone"
     },
     "D": {
-      "tag": "create_redstone_additions:quartz_semiconductor"
+      "item": "create_redstone_additions:quartz_semiconductor"
     },
     "I": {
       "tag": "create_redstone_additions:base_stones"
