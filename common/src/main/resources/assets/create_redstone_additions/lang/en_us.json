@@ -16,6 +16,8 @@
   "tab.create_redstone_additions": "Create: Redstone Additions",
   "minecraft.ponder.tag.create_redstone_additions": "Redstone Additions",
   "minecraft.ponder.tag.create_redstone_additions.description": "Additional Redstone based blocks",
+  "create_redstone_additions.ponder.tag.redstone_additions": "Redstone Additions",
+  "create_redstone_additions.ponder.tag.redstone_additions.description": "Additional Redstone based blocks",
   "create_redstone_additions.ponder.diode.header": "Redstone Diode",
   "create_redstone_additions.ponder.diode.text_1": "A Diode passes the signal when cyan quartz anode is facing the power source, but unlike a repeater, does not refresh it.",
   "create_redstone_additions.ponder.diode.text_2": "When reversed, rose quartz cathode is facing the signal direction thus, blocking it.",
