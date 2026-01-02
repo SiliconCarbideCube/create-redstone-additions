@@ -1,0 +1,23 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "copperative"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "minecraft:quartz" },
+    { "item": "copperative:patina" },
+    { "item": "copperative:patina" },
+    { "item": "copperative:patina" },
+    { "item": "copperative:patina" },
+    { "item": "copperative:patina" },
+    { "item": "copperative:patina" },
+    { "item": "copperative:patina" },
+    { "item": "copperative:patina" }
+  ],
+  "result": {
+    "id": "create_redstone_additions:cyan_quartz"
+  }
+}

@@ -1,5 +1,6 @@
 package dev.siliconcarbidecube.create_redstone_additions.blocks;
 
+import com.mojang.serialization.MapCodec;
 import dev.siliconcarbidecube.create_redstone_additions.init.ModBlocks;
 import dev.siliconcarbidecube.create_redstone_additions.util.LightLevels;
 import net.minecraft.core.BlockPos;
@@ -21,6 +22,7 @@ import net.minecraft.world.ticks.TickPriority;
 import org.jetbrains.annotations.NotNull;
 
 public class Crossroad extends DiodeBlock {
+    public static final MapCodec<Crossroad> CODEC = simpleCodec(properties -> new Crossroad());
     public static final IntegerProperty POWER = BlockStateProperties.POWER;
     public static final IntegerProperty FLANK_POWER = IntegerProperty.create("flank_power", 0, 15);
     public static final IntegerProperty MODEL_TYPE = IntegerProperty.create("model_type", 0, 3);
@@ -33,6 +35,11 @@ public class Crossroad extends DiodeBlock {
                         .strength(0.0F, 0.0F)
                         .lightLevel(LightLevels::computeLightLevel)
         );
+    }
+
+    @Override
+    protected MapCodec<? extends DiodeBlock> codec() {
+        return CODEC;
     }
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {

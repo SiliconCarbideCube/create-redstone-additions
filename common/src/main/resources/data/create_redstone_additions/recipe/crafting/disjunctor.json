@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "C": {
+      "item": "create_redstone_additions:quartz_semiconductor"
+    },
+    "D": {
+      "item": "minecraft:redstone"
+    },
+    "I": {
+      "tag": "create_redstone_additions:base_stones"
+    }
+  },
+  "pattern": [
+    " D ",
+    "CDC",
+    "III"
+  ],
+  "result": {
+    "id": "create_redstone_additions:disjunctor"
+  },
+  "show_notification": true
+}

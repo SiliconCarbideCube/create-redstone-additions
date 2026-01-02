@@ -1,5 +1,6 @@
 package dev.siliconcarbidecube.create_redstone_additions.blocks;
 
+import com.mojang.serialization.MapCodec;
 import dev.siliconcarbidecube.create_redstone_additions.util.LightLevels;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.util.RandomSource;
@@ -17,6 +18,8 @@ import net.minecraft.world.level.material.MapColor;
 import org.jetbrains.annotations.NotNull;
 
 public class Inverter extends DiodeBlock {
+    public static final MapCodec<Inverter> CODEC = simpleCodec(properties -> new Inverter());
+
     public Inverter() {
         super(
                 BlockBehaviour.Properties.of()
@@ -25,6 +28,11 @@ public class Inverter extends DiodeBlock {
                         .strength(0.0F, 0.0F)
                         .lightLevel(LightLevels::computeLightLevel)
         );
+    }
+
+    @Override
+    protected MapCodec<? extends DiodeBlock> codec() {
+        return CODEC;
     }
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {

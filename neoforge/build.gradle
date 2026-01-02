@@ -1,0 +1,218 @@
+plugins {
+    id 'com.github.johnrengelman.shadow'
+}
+
+loom {
+//    forge {
+//        mixinConfig "create_redstone_additions.mixins.json"
+//    }
+
+    runs {
+        client {
+            property("mixin.env.remapRefMap", "true")
+            property("mixin.env.refMapRemappingFile", "${projectDir}/build/createSrgToMcp/output.srg")
+        }
+    }
+}
+
+architectury {
+    platformSetupLoomIde()
+    neoForge()
+}
+
+configurations {
+    common {
+        canBeResolved = true
+        canBeConsumed = false
+    }
+    compileClasspath.extendsFrom common
+    runtimeClasspath.extendsFrom common
+    developmentNeoForge.extendsFrom common
+
+    // Files in this configuration will be bundled into your mod using the Shadow plugin.
+    // Don't use the `shadow` configuration from the plugin itself as it's meant for excluding files.
+    shadowBundle {
+        canBeResolved = true
+        canBeConsumed = false
+    }
+}
+
+repositories {
+    // NeoForge
+    maven { url = "https://maven.neoforged.net/releases" }
+    
+    // Create
+    maven { url = "https://maven.createmod.net" } // Create, Ponder, Flywheel
+    maven { url = "https://maven.tterrag.com" } // Registrate
+    maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/" }
+
+    // JEI
+    maven { url = "https://maven.blamejared.com/" }
+    maven { url = "https://modmaven.dev" }
+
+    mavenCentral()
+}
+
+dependencies {
+    neoForge "net.neoforged:neoforge:$rootProject.neoforge_version"
+
+    modImplementation "dev.architectury:architectury-neoforge:$rootProject.architectury_api_version"
+
+    common(project(path: ':common', configuration: 'namedElements')) { transitive false }
+
+    shadowBundle project(path: ':common', configuration: 'transformProductionNeoForge')
+
+    // Create - Using default classifier (no slim/neoforge suffix needed for 1.21.1+)
+    modImplementation("com.simibubi.create:create-${minecraft_version}:${create_version}") { 
+        transitive = false 
+    }
+
+    // Ponder - Separate dependency for addon development
+    modCompileOnly("net.createmod.ponder:Ponder-NeoForge-${minecraft_version}:${ponder_version}")
+
+    // Flywheel (NeoForge)
+    modCompileOnly("dev.engine-room.flywheel:flywheel-neoforge-api-${minecraft_version}:${flywheel_version}")
+
+    // Mixin Extras
+    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.4.1"))
+    implementation("io.github.llamalad7:mixinextras-neoforge:0.4.1")
+
+    // JEI (NeoForge) - compileOnly for plugin development
+    modCompileOnly("mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}")
+    modRuntimeOnly("mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}")
+}
+
+// Create 6.x ships Registrate (and sometimes Ponder/Flywheel) as Jar-in-Jar.
+// Loom remapping currently drops META-INF/jarjar/metadata.json from the remapped Create jar,
+// which prevents NeoForge from loading the bundled jars in dev runs (causing CNFEs like ItemEntry).
+def createJarJarMetadataPath = 'META-INF/jarjar/metadata.json'
+
+tasks.register('fixCreateJarJarMetadata') {
+    doLast {
+        def createJarNamePrefix = "create-${minecraft_version}-${create_version}"
+
+        def remappedCreateJar = configurations.modRuntimeClasspathMainMapped.files.find { f ->
+            f.name.startsWith(createJarNamePrefix) && f.name.endsWith('.jar')
+        }
+
+        if (remappedCreateJar == null) {
+            logger.lifecycle("[fixCreateJarJarMetadata] No remapped Create jar found in modRuntimeClasspathMainMapped")
+            return
+        }
+
+        def originalCreateArtifact = configurations.modImplementation
+            .resolvedConfiguration
+            .resolvedArtifacts
+            .find { a ->
+                a.moduleVersion.id.group == 'com.simibubi.create' &&
+                    a.moduleVersion.id.version == create_version &&
+                    a.file?.name?.startsWith("create-${minecraft_version}-${create_version}")
+            }
+
+        if (originalCreateArtifact == null) {
+            throw new GradleException("[fixCreateJarJarMetadata] Could not resolve original Create artifact from modImplementation")
+        }
+
+        def originalCreateJar = originalCreateArtifact.file
+
+        def hasMetadata = { File jarFile ->
+            def zip = new java.util.zip.ZipFile(jarFile)
+            try {
+                return zip.getEntry(createJarJarMetadataPath) != null
+            } finally {
+                zip.close()
+            }
+        }
+
+        if (hasMetadata(remappedCreateJar)) {
+            logger.lifecycle("[fixCreateJarJarMetadata] Remapped Create jar already contains ${createJarJarMetadataPath}")
+            return
+        }
+
+        def zipOriginal = new java.util.zip.ZipFile(originalCreateJar)
+        byte[] metadataBytes
+        try {
+            def entry = zipOriginal.getEntry(createJarJarMetadataPath)
+            if (entry == null) {
+                throw new GradleException("[fixCreateJarJarMetadata] Original Create jar is missing ${createJarJarMetadataPath}")
+            }
+            def input = zipOriginal.getInputStream(entry)
+            try {
+                metadataBytes = input.bytes
+            } finally {
+                input.close()
+            }
+        } finally {
+            zipOriginal.close()
+        }
+
+        def tempJar = new File(temporaryDir, remappedCreateJar.name)
+        def zipIn = new java.util.zip.ZipFile(remappedCreateJar)
+        try {
+            def out = new java.util.zip.ZipOutputStream(new FileOutputStream(tempJar))
+            try {
+                def entries = zipIn.entries()
+                while (entries.hasMoreElements()) {
+                    def e = entries.nextElement()
+                    def newEntry = new java.util.zip.ZipEntry(e.name)
+                    newEntry.time = e.time
+                    out.putNextEntry(newEntry)
+                    def is = zipIn.getInputStream(e)
+                    try {
+                        is.transferTo(out)
+                    } finally {
+                        is.close()
+                    }
+                    out.closeEntry()
+                }
+
+                def mdEntry = new java.util.zip.ZipEntry(createJarJarMetadataPath)
+                out.putNextEntry(mdEntry)
+                out.write(metadataBytes)
+                out.closeEntry()
+            } finally {
+                out.close()
+            }
+        } finally {
+            zipIn.close()
+        }
+
+        if (!remappedCreateJar.delete()) {
+            throw new GradleException("[fixCreateJarJarMetadata] Failed to delete remapped Create jar: ${remappedCreateJar}")
+        }
+        if (!tempJar.renameTo(remappedCreateJar)) {
+            throw new GradleException("[fixCreateJarJarMetadata] Failed to replace remapped Create jar with patched jar")
+        }
+
+        logger.lifecycle("[fixCreateJarJarMetadata] Injected ${createJarJarMetadataPath} into ${remappedCreateJar.name}")
+    }
+}
+
+tasks.named('runClient').configure {
+    dependsOn(tasks.named('fixCreateJarJarMetadata'))
+}
+
+processResources {
+    inputs.property 'version', project.version
+
+    filesMatching('META-INF/neoforge.mods.toml') {
+        expand version: project.version
+    }
+}
+
+shadowJar {
+    configurations = [project.configurations.shadowBundle]
+    archiveClassifier = 'dev-shadow'
+
+    // Common module contributes ServiceLoader registrations (e.g., PonderPlugin).
+    // Merge META-INF/services entries so they survive shading.
+    mergeServiceFiles()
+
+    // Bundling Architectury
+    // relocate 'dev.architectury', 'dev.siliconcarbidecube.architectury'
+
+}
+
+remapJar {
+    input.set shadowJar.archiveFile
+}

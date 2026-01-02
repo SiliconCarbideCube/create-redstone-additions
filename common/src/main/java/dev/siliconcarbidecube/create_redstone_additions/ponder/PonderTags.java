@@ -11,7 +11,7 @@ import dev.siliconcarbidecube.create_redstone_additions.init.ModItems;
 
 public class PonderTags {
 
-    public static final ResourceLocation REDSTONE_ADDITIONS = new ResourceLocation(CreateRedstoneAdditions.MOD_ID);
+    public static final ResourceLocation REDSTONE_ADDITIONS = ResourceLocation.fromNamespaceAndPath(CreateRedstoneAdditions.MOD_ID, "redstone_additions");
 
     public static void register(PonderTagRegistrationHelper<ResourceLocation> helper) {
         PonderTagRegistrationHelper<ItemLike> itemHelper = helper.withKeyFunction(

@@ -4,13 +4,14 @@ import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 
 import dev.siliconcarbidecube.create_redstone_additions.blocks.*;
+import dev.siliconcarbidecube.create_redstone_additions.CreateRedstoneAdditions;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.Block;
 
 public class ModBlocks {
     public static final DeferredRegister<Block> REGISTRY =
-            DeferredRegister.create("create_redstone_additions", Registries.BLOCK);
+                        DeferredRegister.create(CreateRedstoneAdditions.MOD_ID, Registries.BLOCK);
 
     public static final RegistrySupplier<Block> DIODE_BLOCK =
             REGISTRY.register("diode", Diode::new);
