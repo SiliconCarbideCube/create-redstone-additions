@@ -5,14 +5,8 @@ plugins {
 def modVersion = project.version.toString()
 
 loom {
-//    forge {
-//        mixinConfig "create_redstone_additions.mixins.json"
-//    }
-
     runs {
         client {
-            property("mixin.env.remapRefMap", "true")
-            property("mixin.env.refMapRemappingFile", "${projectDir}/build/createSrgToMcp/output.srg")
         }
     }
 }
@@ -74,10 +68,6 @@ dependencies {
 
     // Flywheel (NeoForge)
     modCompileOnly("dev.engine-room.flywheel:flywheel-neoforge-api-${minecraft_version}:${flywheel_version}")
-
-    // Mixin Extras
-    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.4.1"))
-    implementation("io.github.llamalad7:mixinextras-neoforge:0.4.1")
 
     // JEI (NeoForge) - compileOnly for plugin development
     modCompileOnly("mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}")

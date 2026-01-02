@@ -26,7 +26,4 @@ dependencies {
     // Ponder (Common API)
     modCompileOnly("net.createmod.ponder:Ponder-Common-${minecraft_version}:${ponder_version}")
 
-    // Mixins
-    // annotationProcessor "org.spongepowered:mixin:0.8.5:processor"
-
 }

@@ -2,7 +2,6 @@
   "block.create_redstone_additions.disjunctor": "Редстоуновый дизъюнктор",
   "block.create_redstone_additions.conjunctor": "Редстоуновый конъюнктор",
   "block.create_redstone_additions.inverter": "Редстоуновый инвертор",
-  "block.create_redstone_additions.exclusive_disjunctor": "Редстоуновый исключающий дизъюнктор",
   "block.create_redstone_additions.crossroad": "Редстоуновый перекрёсток",
   "block.create_redstone_additions.diode": "Редстоуновый диод",
   "block.create_redstone_additions.golden_resistor": "Редстоуновый золотой резистор",

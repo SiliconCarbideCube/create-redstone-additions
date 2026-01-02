@@ -2,7 +2,6 @@
   "block.create_redstone_additions.disjunctor": "Redstone Disjunctor",
   "block.create_redstone_additions.conjunctor": "Redstone Conjunctor",
   "block.create_redstone_additions.inverter": "Redstone Inverter",
-  "block.create_redstone_additions.exclusive_disjunctor": "Redstone Exclusive Disjunctor",
   "block.create_redstone_additions.crossroad": "Redstone Crossroad",
   "block.create_redstone_additions.diode": "Redstone Diode",
   "block.create_redstone_additions.golden_resistor": "Redstone Golden Resistor",

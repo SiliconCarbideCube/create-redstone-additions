@@ -13,9 +13,6 @@ Mod that adds logic gates and other redstone components.
 '''
 logoFile = "icon.png"
 
-#[[mixins]]
-#config="create_redstone_additions.mixins.json"
-
 [[dependencies.create_redstone_additions]]
 modId = "neoforge"
 type = "required"
