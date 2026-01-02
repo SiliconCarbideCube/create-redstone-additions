@@ -18,7 +18,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.ticks.TickPriority;
 import org.jetbrains.annotations.NotNull;
@@ -157,7 +156,7 @@ public class ResistorII extends DiodeBlock {
     }
 
     private static void makeParticle(BlockState state, LevelAccessor level, BlockPos pos) {
-        Direction direction = ((Direction)state.getValue((Property)FACING)).getOpposite();
+        Direction direction = state.getValue(FACING).getOpposite();
         double x = pos.getX() + 0.5D - 0.1D * direction.getStepX();
         double y = pos.getY() + 0.35D;
         double z = pos.getZ() + 0.5D - 0.1D * direction.getStepZ();

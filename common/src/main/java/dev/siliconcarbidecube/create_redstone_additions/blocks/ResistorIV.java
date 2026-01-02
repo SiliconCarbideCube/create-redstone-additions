@@ -5,7 +5,6 @@ import dev.siliconcarbidecube.create_redstone_additions.util.LightLevels;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
-import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -19,7 +18,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.ticks.TickPriority;
 import org.jetbrains.annotations.NotNull;
@@ -44,7 +42,7 @@ public class ResistorIV extends DiodeBlock {
     }
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(new Property[] { (Property)FACING, (Property)POWER});
+        builder.add(FACING, POWER);
     }
 
     @Override
@@ -64,7 +62,7 @@ public class ResistorIV extends DiodeBlock {
 
     public boolean canConnectRedstone(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
         if (direction != null) {
-            Direction dirFront = (Direction)state.getValue(FACING);
+            Direction dirFront = state.getValue(FACING);
             Direction dirBack = dirFront.getOpposite();
             return (direction == dirFront || direction == dirBack);
         }
@@ -158,16 +156,16 @@ public class ResistorIV extends DiodeBlock {
     }
 
     private static void makeParticle(BlockState state, LevelAccessor level, BlockPos pos) {
-        Direction direction = ((Direction)state.getValue((Property)FACING)).getOpposite();
+        Direction direction = state.getValue(FACING).getOpposite();
         double x = pos.getX() + 0.5D - 0.1D * direction.getStepX();
         double y = pos.getY() + 0.35D;
         double z = pos.getZ() + 0.5D - 0.1D * direction.getStepZ();
-        level.addParticle((ParticleOptions)new DustParticleOptions(DustParticleOptions.REDSTONE_PARTICLE_COLOR, 0.9F), x, y, z, 0.0D, 0.0D, 0.0D);
+        level.addParticle(new DustParticleOptions(DustParticleOptions.REDSTONE_PARTICLE_COLOR, 0.9F), x, y, z, 0.0D, 0.0D, 0.0D);
     }
 
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
         if ((state.getValue(POWER)>0) && random.nextFloat() > 0.4F) {
-            makeParticle(state, (LevelAccessor) level, pos);
+            makeParticle(state, level, pos);
         }
     }
 

@@ -15,6 +15,7 @@ public final class CreateRedstoneAdditionsNeoForge {
         modEventBus.addListener(this::onClientSetup);
 
         if (FMLEnvironment.dist.isClient()) {
+            modEventBus.addListener(dev.siliconcarbidecube.create_redstone_additions.neoforge.ponder.PonderBootstrap::onConstruct);
             NeoForge.EVENT_BUS.addListener(dev.siliconcarbidecube.create_redstone_additions.neoforge.debug.RecipeDebugCommands::register);
         }
     }

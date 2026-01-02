@@ -23,4 +23,4 @@ eclipse
 run
 .architectury-transformer
 .plans
-ponder.backup
+.tmp/
