@@ -3,7 +3,6 @@ package dev.siliconcarbidecube.create_redstone_additions.util;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import dev.siliconcarbidecube.create_redstone_additions.blocks.Crossroad;
-import dev.siliconcarbidecube.create_redstone_additions.blocks.Inverter;
 import dev.siliconcarbidecube.create_redstone_additions.blocks.Conjunctor;
 
 public class LightLevels {
@@ -22,10 +21,6 @@ public class LightLevels {
 
         if (state.hasProperty(BlockStateProperties.POWERED)) {
             return state.getValue(BlockStateProperties.POWERED) ? 5 : 0;
-        }
-
-        if (state.getBlock() instanceof Inverter && state.hasProperty(BlockStateProperties.POWERED)) {
-            return 5;
         }
 
         return 0;

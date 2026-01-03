@@ -1,0 +1,42 @@
+modLoader = "javafml"
+loaderVersion = "[4,)"
+#issueTrackerURL = ""
+license = "GNU AGPL 3.0"
+
+[[mods]]
+modId = "create_redstone_additions"
+version = "${version}"
+displayName = "Create: Redstone Additions"
+authors = "Slimik42, SiliconCarbideCube"
+description = '''
+Mod that adds logic gates and other redstone components.
+'''
+logoFile = "icon.png"
+
+[[dependencies.create_redstone_additions]]
+modId = "neoforge"
+type = "required"
+versionRange = "[21.1,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.create_redstone_additions]]
+modId = "minecraft"
+type = "required"
+versionRange = "[1.21.1,1.22)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.create_redstone_additions]]
+modId = "architectury"
+type = "required"
+versionRange = "[13.0.0,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.create_redstone_additions]]
+modId = "create"
+type = "required"
+versionRange = "[0.5.1,)"
+ordering = "AFTER"
+side = "BOTH"

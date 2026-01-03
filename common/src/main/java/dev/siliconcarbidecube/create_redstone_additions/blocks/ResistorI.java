@@ -1,5 +1,6 @@
 package dev.siliconcarbidecube.create_redstone_additions.blocks;
 
+import com.mojang.serialization.MapCodec;
 import dev.siliconcarbidecube.create_redstone_additions.util.LightLevels;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.server.level.ServerLevel;
@@ -21,6 +22,7 @@ import net.minecraft.world.ticks.TickPriority;
 import org.jetbrains.annotations.NotNull;
 
 public class ResistorI extends DiodeBlock {
+    public static final MapCodec<ResistorI> CODEC = simpleCodec(properties -> new ResistorI());
     public static final IntegerProperty POWER = BlockStateProperties.POWER;
 
     public ResistorI() {
@@ -31,6 +33,11 @@ public class ResistorI extends DiodeBlock {
                         .strength(0.0F, 0.0F)
                         .lightLevel(LightLevels::computeLightLevel)
         );
+    }
+
+    @Override
+    protected MapCodec<? extends DiodeBlock> codec() {
+        return CODEC;
     }
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {

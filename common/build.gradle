@@ -3,36 +3,27 @@ architectury {
 }
 
 configurations {
-    transformProductionForge
-    transformProductionFabric
+    transformProductionNeoForge
 }
 
 artifacts {
-    transformProductionForge jar
-    transformProductionFabric jar
+    transformProductionNeoForge jar
 }
 
 
 repositories {
-    maven { url "https://maven.createmod.net/" }     // Ponder
-    maven { url "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/" }
+    maven { url = "https://maven.createmod.net/" }     // Ponder
+    maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/" }
 
     // SpongePowered
-    maven {url "https://repo.spongepowered.org/maven" }
+    maven { url = "https://repo.spongepowered.org/maven" }
 }
 
 dependencies {
-    // We depend on Fabric Loader here to use the Fabric @Environment annotations,
-    // which get remapped to the correct annotations on each platform.
-    // Do NOT use other classes from Fabric Loader.
-    modImplementation "net.fabricmc:fabric-loader:$rootProject.fabric_loader_version"
 
     modImplementation "dev.architectury:architectury:$rootProject.architectury_api_version"
 
-    // Ponder (Common)
-    modImplementation "net.createmod.ponder:Ponder-Common-${minecraft_version}:${ponder_version}"
-
-    // Mixins
-    // annotationProcessor "org.spongepowered:mixin:0.8.5:processor"
+    // Ponder (Common API)
+    modCompileOnly("net.createmod.ponder:Ponder-Common-${minecraft_version}:${ponder_version}")
 
 }
