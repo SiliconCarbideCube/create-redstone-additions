@@ -1,6 +1,5 @@
 package dev.siliconcarbidecube.create_redstone_additions.blocks;
 
-import dev.siliconcarbidecube.create_redstone_additions.init.ModBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -8,7 +7,8 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.DiodeBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -17,20 +17,34 @@ import net.minecraft.world.ticks.TickPriority;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class Diode extends AbstractCustomDiodeBlock {
+import java.util.function.Function;
+
+public abstract class AbstractResistor extends AbstractCustomDiodeBlock {
     public static final IntegerProperty POWER = BlockStateProperties.POWER;
 
-    public Diode(Properties properties) {
-        super(Diode::new);
+    protected AbstractResistor(Function<Properties, ? extends DiodeBlock> constructor) {
+        super(constructor);
     }
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(FACING, POWER);
     }
 
+    protected abstract int attenuation();
+
+    @Override
     public @NotNull BlockState getStateForPlacement(BlockPlaceContext ctx) {
         BlockState state = super.getStateForPlacement(ctx);
-        return state.setValue(POWER, this.getInputSignal(ctx.getLevel(), ctx.getClickedPos(), state));
+        Level level = ctx.getLevel();
+        BlockPos pos = ctx.getClickedPos();
+
+        state = state.setValue(POWER, this.getInputSignal(level, pos, state));
+
+        if (!level.isClientSide) {
+            level.scheduleTick(pos, this, this.getDelay(state), TickPriority.HIGH);
+        }
+
+        return state;
     }
 
     public boolean canConnectRedstone(BlockState state, BlockGetter level, BlockPos pos, @Nullable Direction direction) {
@@ -43,11 +57,7 @@ public class Diode extends AbstractCustomDiodeBlock {
         if (blockState.getValue(POWER) == 0) {
             return 0;
         } else {
-            int i = this.getOutputSignal(getter, pos, blockState);
-            BlockPos gpos = pos.relative(dir.getOpposite());
-            BlockState gbs = getter.getBlockState(gpos);
-            //return blockState.getValue(FACING) == dir ? ((blockStateS.is(Blocks.REDSTONE_WIRE) ? this.getOutputSignal(getter, pos, blockState) - 1 : this.getOutputSignal(getter, pos, blockState))) : 0;
-            return blockState.getValue(FACING) == dir ? (gbs.is(Blocks.REDSTONE_WIRE) ? (i > 0 ? i - 1 : 0) : i) : 0;
+            return (blockState.getValue(FACING) == dir || blockState.getValue(FACING) == dir.getOpposite()) ? this.getOutputSignal(getter, pos, blockState) : 0;
         }
     }
     protected int getOutputSignal(BlockGetter getter, BlockPos pos, BlockState blockState) {
@@ -57,42 +67,28 @@ public class Diode extends AbstractCustomDiodeBlock {
     protected boolean shouldTurnOn(Level level, BlockPos pos, BlockState state) {
         return state.getValue(POWER) > 0;
     }
-    
+
+
+    @Override
     protected int getInputSignal(Level level, BlockPos pos, BlockState state) {
         Direction direction = state.getValue(FACING);
+        Direction directionS = direction.getOpposite();
         BlockPos blockpos = pos.relative(direction);
+        BlockPos blockposS = pos.relative(directionS);
         int i = level.getSignal(blockpos, direction);
-        BlockState blockstate = level.getBlockState(blockpos);
-        if (blockstate.is(ModBlocks.DIODE.get()) || blockstate.is(ModBlocks.CROSSROAD.get())){
-            i = i!=0 ? i-1 : 0;
-        }
-        return blockstate.is(Blocks.REDSTONE_WIRE) ? (blockstate.getValue(RedStoneWireBlock.POWER) == 0 ? 0 : blockstate.getValue(RedStoneWireBlock.POWER) - 1) : i;
+        int j = level.getSignal(blockposS, directionS);
+        i = Math.max(i, j);
+        return i > (attenuation() - 1) ? i - attenuation() : 0;
     }
 
-    @Override
-    public void neighborChanged(BlockState state, Level level, BlockPos pos,
-                                Block block, BlockPos fromPos, boolean isMoving) {
-        if (!level.isClientSide && !this.isLocked(level, pos, state)) {
-            int newPower = this.getInputSignal(level, pos, state);
-            int oldPower = state.getValue(POWER);
-
-            if (oldPower != newPower) {
-                BlockState updated = state.setValue(POWER, newPower);
-                level.setBlock(pos, updated, 2);
-                this.updateNeighborsInFront(level, pos, updated);
-            }
-
-        }
-    }
-
-    @Override
-    public void tick(BlockState state, ServerLevel level,
-                     BlockPos pos, RandomSource random) {
-        if (!this.isLocked(level, pos, state)) {
-            int newPower = this.getInputSignal(level, pos, state);
-            if (state.getValue(POWER) != newPower) {
-                level.setBlock(pos, state.setValue(POWER, newPower), 2);
-                this.updateNeighborsInFront(level, pos, state);
+    public void tick(BlockState p_221065_, ServerLevel p_221066_, BlockPos p_221067_, RandomSource p_221068_) {
+        if (!this.isLocked(p_221066_, p_221067_, p_221065_)) {
+            int flag = p_221065_.getValue(POWER);
+            int flag1 = this.getInputSignal(p_221066_, p_221067_, p_221065_);
+            if (flag > 0 && flag1 == 0) {
+                p_221066_.setBlock(p_221067_, p_221065_.setValue(POWER, 0), 2);
+            } else {
+                p_221066_.setBlock(p_221067_, p_221065_.setValue(POWER, flag1), 2);
             }
         }
     }
@@ -112,8 +108,34 @@ public class Diode extends AbstractCustomDiodeBlock {
                 p_52577_.scheduleTick(p_52578_, this, this.getDelay(p_52579_), tickpriority);
             }
         }
-
     }
 
+    protected void updateNeighborsInFront(Level level, BlockPos pos, BlockState state) {
+        Direction directionF = state.getValue(FACING);
+        Direction directionB = directionF.getOpposite();
 
+        BlockPos blockposF = pos.relative(directionF.getOpposite());
+        BlockPos blockposB = pos.relative(directionB.getOpposite());
+
+        level.neighborChanged(blockposF, this, pos);
+        level.updateNeighborsAtExceptFromFacing(blockposF, this, directionF);
+
+        level.neighborChanged(blockposB, this, pos);
+        level.updateNeighborsAtExceptFromFacing(blockposB, this, directionB);
+    }
+
+    @Override
+    public void neighborChanged(BlockState state, Level level, BlockPos pos,
+                                Block block, BlockPos fromPos, boolean isMoving) {
+        if (!level.isClientSide && !this.isLocked(level, pos, state)) {
+            int newPower = this.getInputSignal(level, pos, state);
+            int oldPower = state.getValue(POWER);
+
+            if (oldPower != newPower) {
+                BlockState updated = state.setValue(POWER, newPower);
+                level.setBlock(pos, updated, 2);
+                this.updateNeighborsInFront(level, pos, updated);
+            }
+        }
+    }
 }

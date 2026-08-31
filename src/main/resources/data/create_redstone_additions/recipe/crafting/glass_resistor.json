@@ -3,21 +3,21 @@
   "category": "redstone",
   "key": {
     "R": {
-      "item": "minecraft:redstone"
+      "item": "minecraft:tinted_glass"
     },
     "D": {
-      "item": "create_redstone_additions:quartz_semiconductor"
+      "item": "minecraft:redstone"
     },
     "I": {
-      "tag": "create_redstone_additions:base_stones"
+      "tag": "c:stones"
     }
   },
   "pattern": [
-    "RDR",
+    "DRD",
     "III"
   ],
   "result": {
-    "item": "create_redstone_additions:diode"
+    "id": "create_redstone_additions:glass_resistor"
   },
   "show_notification": true
 }

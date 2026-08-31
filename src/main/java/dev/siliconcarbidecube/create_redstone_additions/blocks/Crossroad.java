@@ -1,55 +1,45 @@
 package dev.siliconcarbidecube.create_redstone_additions.blocks;
 
 import dev.siliconcarbidecube.create_redstone_additions.init.ModBlocks;
-import dev.siliconcarbidecube.create_redstone_additions.util.LightLevels;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.ticks.TickPriority;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public class Crossroad extends DiodeBlock {
+public class Crossroad extends AbstractCustomDiodeBlock {
     public static final IntegerProperty POWER = BlockStateProperties.POWER;
     public static final IntegerProperty FLANK_POWER = IntegerProperty.create("flank_power", 0, 15);
     public static final IntegerProperty MODEL_TYPE = IntegerProperty.create("model_type", 0, 3);
 
-    public Crossroad() {
-        super(
-                Properties.of()
-                        .mapColor(MapColor.NONE)
-                        .sound(SoundType.COPPER)
-                        .strength(0.0F, 0.0F)
-                        .lightLevel(LightLevels::computeLightLevel)
-        );
+    public Crossroad(Properties properties) {
+        super(Crossroad::new);
     }
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(FACING, POWER, FLANK_POWER, MODEL_TYPE);
     }
 
-    public @NotNull BlockState getStateForPlacement(@NotNull BlockPlaceContext ctx) {
+    public @NotNull BlockState getStateForPlacement(BlockPlaceContext ctx) {
         BlockState state = super.getStateForPlacement(ctx);
-        //return (BlockState)state.setValue((Property)POWERED, Boolean.valueOf(shouldTurnOn(ctx.getLevel(), ctx.getClickedPos(), state)));
         return state.setValue(POWER, this.getInputSignal(ctx.getLevel(), ctx.getClickedPos(), state));
     }
 
-    public boolean canConnectRedstone(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+    public boolean canConnectRedstone(BlockState state, BlockGetter level, BlockPos pos, @Nullable Direction direction) {
         return true;
     }
 
-    public int getSignal(BlockState blockState, @NotNull BlockGetter getter, @NotNull BlockPos pos, @NotNull Direction dir) {
+    public int getSignal(BlockState blockState, BlockGetter getter, BlockPos pos, Direction dir) {
         if (blockState.getValue(POWER) == 0 && blockState.getValue(FLANK_POWER) == 0) {
             return 0;
         } else {
@@ -57,7 +47,6 @@ public class Crossroad extends DiodeBlock {
             int flankPower = this.getFlankOutputSignal(blockState);
             BlockPos gpos = pos.relative(dir.getOpposite());
             BlockState gbs = getter.getBlockState(gpos);
-            //return blockState.getValue(FACING) == dir ? ((blockStateS.is(Blocks.REDSTONE_WIRE) ? this.getOutputSignal(getter, pos, blockState) - 1 : this.getOutputSignal(getter, pos, blockState))) : 0;
             if (blockState.getValue(FACING) == dir || blockState.getValue(FACING).getOpposite() == dir) {
                 return gbs.is(Blocks.REDSTONE_WIRE) ? (power > 0 ? power - 1 : 0) : power;
             } else {
@@ -70,7 +59,7 @@ public class Crossroad extends DiodeBlock {
         }
     }
 
-    protected int getOutputSignal(@NotNull BlockGetter getter, @NotNull BlockPos pos, BlockState blockState) {
+    protected int getOutputSignal(BlockGetter getter, BlockPos pos, BlockState blockState) {
         return blockState.getValue(POWER);
     }
 
@@ -78,7 +67,7 @@ public class Crossroad extends DiodeBlock {
         return blockState.getValue(FLANK_POWER);
     }
 
-    protected boolean shouldTurnOn(@NotNull Level level, @NotNull BlockPos pos, BlockState state) {
+    protected boolean shouldTurnOn(Level level, BlockPos pos, BlockState state) {
         return state.getValue(POWER) > 0;
     }
 
@@ -90,7 +79,7 @@ public class Crossroad extends DiodeBlock {
         BlockPos MaxFB = level.getSignal(blockposF, directionF) > level.getSignal(blockposB, directionB) ? blockposF : blockposB;
         int i = Math.max(level.getSignal(blockposF, directionF), level.getSignal(blockposB, directionB));
         BlockState blockstate = level.getBlockState(MaxFB);
-        if (blockstate.is(ModBlocks.DIODE_BLOCK.get()) || blockstate.is(ModBlocks.CROSSROAD_BLOCK.get())) {
+        if (blockstate.is(ModBlocks.DIODE.get()) || blockstate.is(ModBlocks.CROSSROAD.get())) {
             i = i != 0 ? i - 1 : 0;
         }
         return blockstate.is(Blocks.REDSTONE_WIRE)
@@ -106,7 +95,7 @@ public class Crossroad extends DiodeBlock {
         BlockPos MaxRL = level.getSignal(blockposR, directionR) > level.getSignal(blockposL, directionL) ? blockposR : blockposL;
         int i = Math.max(level.getSignal(blockposR, directionR), level.getSignal(blockposL, directionL));
         BlockState blockstate = level.getBlockState(MaxRL);
-        if (blockstate.is(ModBlocks.DIODE_BLOCK.get()) || blockstate.is(ModBlocks.CROSSROAD_BLOCK.get())) {
+        if (blockstate.is(ModBlocks.DIODE.get()) || blockstate.is(ModBlocks.CROSSROAD.get())) {
             i = i != 0 ? i - 1 : 0;
         }
         return blockstate.is(Blocks.REDSTONE_WIRE)
@@ -114,7 +103,7 @@ public class Crossroad extends DiodeBlock {
                 : i;
     }
 
-    public void tick(@NotNull BlockState p_221065_, @NotNull ServerLevel p_221066_, @NotNull BlockPos p_221067_, @NotNull RandomSource p_221068_) {
+    public void tick(BlockState p_221065_, ServerLevel p_221066_, BlockPos p_221067_, RandomSource p_221068_) {
         if (!this.isLocked(p_221066_, p_221067_, p_221065_)) {
             int flag = p_221065_.getValue(POWER);
             int flag1 = this.getInputSignal(p_221066_, p_221067_, p_221065_);
@@ -146,7 +135,7 @@ public class Crossroad extends DiodeBlock {
         }
     }
 
-    protected void checkTickOnNeighbor(@NotNull Level p_52577_, @NotNull BlockPos p_52578_, @NotNull BlockState p_52579_) {
+    protected void checkTickOnNeighbor(Level p_52577_, BlockPos p_52578_, BlockState p_52579_) {
         if (!this.isLocked(p_52577_, p_52578_, p_52579_)) {
             int flag = p_52579_.getValue(POWER);
             int flag1 = this.getInputSignal(p_52577_, p_52578_, p_52579_);
@@ -164,7 +153,6 @@ public class Crossroad extends DiodeBlock {
             }
 
         }
-
     }
 
     protected void updateNeighborsInFront(Level level, BlockPos pos, BlockState state) {
@@ -220,28 +208,5 @@ public class Crossroad extends DiodeBlock {
                 level.setBlock(pos, state, 2);
             }
         }
-    }
-
-    private static void makeParticle(BlockState state, LevelAccessor level, BlockPos pos) {
-        Direction direction = state.getValue(FACING).getOpposite();
-        double x = pos.getX() + 0.5D - 0.1D * direction.getStepX();
-        double y = pos.getY() + 0.35D;
-        double z = pos.getZ() + 0.5D - 0.1D * direction.getStepZ();
-        level.addParticle(
-                new DustParticleOptions(DustParticleOptions.REDSTONE_PARTICLE_COLOR, 0.9F),
-                x, y, z,
-                0.0D, 0.0D, 0.0D
-        );
-    }
-
-    public void animateTick(BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull RandomSource random) {
-        if (((state.getValue(POWER) > 0) || (state.getValue(FLANK_POWER) > 0)) && random.nextFloat() > 0.4F) {
-            makeParticle(state, level, pos);
-        }
-    }
-
-    @Override
-    protected int getDelay(@NotNull BlockState blockState) {
-        return 0;
     }
 }

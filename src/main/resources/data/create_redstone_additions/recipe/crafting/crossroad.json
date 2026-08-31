@@ -2,22 +2,20 @@
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
   "key": {
-    "R": {
-      "item": "minecraft:terracotta"
-    },
     "D": {
       "item": "minecraft:redstone"
     },
     "I": {
-      "tag": "create_redstone_additions:base_stones"
+      "tag": "c:stones"
     }
   },
   "pattern": [
-    "DRD",
-    "III"
+    " D ",
+    "DID",
+    "IDI"
   ],
   "result": {
-    "item": "create_redstone_additions:ceramic_resistor"
+    "id": "create_redstone_additions:crossroad"
   },
   "show_notification": true
 }

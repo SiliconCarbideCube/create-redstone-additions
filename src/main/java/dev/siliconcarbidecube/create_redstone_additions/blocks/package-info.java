@@ -1,0 +1,4 @@
+@ParametersAreNonnullByDefault
+package dev.siliconcarbidecube.create_redstone_additions.blocks;
+
+import javax.annotation.ParametersAreNonnullByDefault;

@@ -9,7 +9,7 @@
       "item": "minecraft:redstone"
     },
     "I": {
-      "tag": "create_redstone_additions:base_stones"
+      "tag": "c:stones"
     }
   },
   "pattern": [
@@ -17,7 +17,7 @@
     "III"
   ],
   "result": {
-    "item": "create_redstone_additions:golden_resistor"
+    "id": "create_redstone_additions:golden_resistor"
   },
   "show_notification": true
 }

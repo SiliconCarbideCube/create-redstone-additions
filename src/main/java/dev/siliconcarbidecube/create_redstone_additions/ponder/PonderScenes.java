@@ -1,5 +1,6 @@
 package dev.siliconcarbidecube.create_redstone_additions.ponder;
 
+import dev.siliconcarbidecube.create_redstone_additions.init.ModBlocks;
 import dev.siliconcarbidecube.create_redstone_additions.ponder.scenes.*;
 
 import net.createmod.ponder.api.registration.PonderSceneRegistrationHelper;
@@ -10,55 +11,55 @@ public class PonderScenes {
     public static void register(PonderSceneRegistrationHelper<ResourceLocation> helper) {
 
         helper.addStoryBoard(
-                new ResourceLocation("create_redstone_additions", "diode"),
+                ModBlocks.DIODE.getId(),
                 "diode",
                 DiodeScene::diode
         );
 
         helper.addStoryBoard(
-                new ResourceLocation("create_redstone_additions", "conjunctor"),
+                ModBlocks.CONJUNCTOR.getId(),
                 "conjunctor",
                 ConjunctorScene::conjunctor
         );
 
         helper.addStoryBoard(
-                new ResourceLocation("create_redstone_additions", "disjunctor"),
+                ModBlocks.DISJUNCTOR.getId(),
                 "disjunctor",
                 DisjunctorScene::disjunctor
         );
 
         helper.addStoryBoard(
-                new ResourceLocation("create_redstone_additions", "inverter"),
+                ModBlocks.INVERTER.getId(),
                 "inverter",
                 InverterScene::inverter
         );
 
         helper.addStoryBoard(
-                new ResourceLocation("create_redstone_additions", "crossroad"),
+                ModBlocks.CROSSROAD.getId(),
                 "crossroad",
                 CrossroadScene::crossroad
         );
 
         helper.addStoryBoard(
-                new ResourceLocation("create_redstone_additions", "golden_resistor"),
+                ModBlocks.GOLDEN_RESISTOR.getId(),
                 "resistors",
                 ResistorsScene::resistors
         );
 
         helper.addStoryBoard(
-                new ResourceLocation("create_redstone_additions", "iron_resistor"),
+                ModBlocks.IRON_RESISTOR.getId(),
                 "resistors",
                 ResistorsScene::resistors
         );
 
         helper.addStoryBoard(
-                new ResourceLocation("create_redstone_additions", "ceramic_resistor"),
+                ModBlocks.CERAMIC_RESISTOR.getId(),
                 "resistors",
                 ResistorsScene::resistors
         );
 
         helper.addStoryBoard(
-                new ResourceLocation("create_redstone_additions", "glass_resistor"),
+                ModBlocks.GLASS_RESISTOR.getId(),
                 "resistors",
                 ResistorsScene::resistors
         );

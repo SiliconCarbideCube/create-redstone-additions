@@ -12,6 +12,6 @@
     { "item": "create_redstone_additions:verdigris" }
   ],
   "result": {
-    "item": "create_redstone_additions:cyan_quartz"
+    "id": "create_redstone_additions:cyan_quartz"
   }
 }

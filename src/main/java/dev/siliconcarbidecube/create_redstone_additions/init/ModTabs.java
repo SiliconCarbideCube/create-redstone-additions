@@ -1,46 +1,57 @@
 package dev.siliconcarbidecube.create_redstone_additions.init;
 
-import dev.architectury.registry.CreativeTabRegistry;
-import dev.architectury.registry.registries.DeferredRegister;
-import dev.architectury.registry.registries.RegistrySupplier;
+import com.simibubi.create.AllCreativeModeTabs;
+import dev.siliconcarbidecube.create_redstone_additions.CreateRedstoneAdditions;
+import dev.siliconcarbidecube.create_redstone_additions.util.ResourcePathfinder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredRegister;
 
-import static dev.siliconcarbidecube.create_redstone_additions.CreateRedstoneAdditions.MOD_ID;
+import java.util.function.Supplier;
 
 public class ModTabs {
-    public static final DeferredRegister<CreativeModeTab> REGISTER =
-            DeferredRegister.create(MOD_ID, Registries.CREATIVE_MODE_TAB);
+    public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TAB =
+            DeferredRegister.create(
+                    Registries.CREATIVE_MODE_TAB,
+                    CreateRedstoneAdditions.MOD_ID
+            );
 
-    public static final RegistrySupplier<CreativeModeTab> CREATE_REDSTONE_ADDITIONS_TAB = REGISTER.register(
-            "create_redstone_additions_tab",
-            () -> CreativeTabRegistry.create(builder -> {
-                builder.title(Component.translatable("tab.create_redstone_additions"))
-                        .icon(() -> new ItemStack(ModItems.CYAN_QUARTZ.get()))
-                        .displayItems((parameters, output) -> {
-                            // Block Items
-                            output.accept(ModItems.DIODE_BLOCK_ITEM.get());
-                            output.accept(ModItems.CROSSROAD_BLOCK_ITEM.get());
-                            output.accept(ModItems.INVERTER_BLOCK_ITEM.get());
-                            output.accept(ModItems.GOLDEN_RESISTOR_BLOCK_ITEM.get());
-                            output.accept(ModItems.IRON_RESISTOR_BLOCK_ITEM.get());
-                            output.accept(ModItems.CERAMIC_RESISTOR_BLOCK_ITEM.get());
-                            output.accept(ModItems.GLASS_RESISTOR_BLOCK_ITEM.get());
-                            output.accept(ModItems.CONJUNCTOR_BLOCK_ITEM.get());
-                            output.accept(ModItems.DISJUNCTOR_BLOCK_ITEM.get());
+    public static final ResourceKey<CreativeModeTab>
+            ITEMS_TAB_KEY =
+            ResourceKey.create(
+                    Registries.CREATIVE_MODE_TAB,
+                    ResourcePathfinder.locate("items_tab")
+            ),
 
-                            // Items
-                            output.accept(ModItems.CYAN_QUARTZ.get());
-                            output.accept(ModItems.QUARTZ_SEMICONDUCTOR.get());
-                            output.accept(ModItems.POLISHED_CYAN_QUARTZ.get());
-                            output.accept(ModItems.VERDIGRIS.get());
-                        });
-            })
-    );
+            BLOCKS_TAB_KEY =
+            ResourceKey.create(
+                    Registries.CREATIVE_MODE_TAB,
+                    ResourcePathfinder.locate("blocks_tab")
+            );
 
-    public static void register() {
-        REGISTER.register();
+    public static final Supplier<CreativeModeTab>
+            ITEMS_TAB = CREATIVE_MODE_TAB.register(
+            "items_tab",
+            () -> CreativeModeTab.builder()
+                    .icon(() -> new ItemStack(ModItems.CYAN_QUARTZ.get()))
+                    .withTabsAfter(BLOCKS_TAB_KEY)
+                    .title(Component.translatable("itemGroup.create_redstone_additions.items_tab"))
+                    .build()),
+
+            BLOCKS_TAB = CREATIVE_MODE_TAB.register(
+            "blocks_tab",
+            () -> CreativeModeTab.builder()
+                    .icon(() -> new ItemStack(ModBlocks.DIODE.get()))
+                    .title(Component.translatable("itemGroup.create_redstone_additions.blocks_tab"))
+                    .build());
+
+
+    public static void register(IEventBus eventBus) {
+        CREATIVE_MODE_TAB.register(eventBus);
     }
+
 }

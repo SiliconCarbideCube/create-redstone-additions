@@ -17,8 +17,11 @@ public class LightLevels {
         }
 
         if (state.hasProperty(Crossroad.POWER) && state.hasProperty(Crossroad.FLANK_POWER)) {
-            return Math.max(state.getValue(Crossroad.POWER), state.getValue(Crossroad.FLANK_POWER));
+            int power = state.getValue(Crossroad.POWER);
+            int flank = state.getValue(Crossroad.FLANK_POWER);
+            return (power + flank) / 2;
         }
+
 
         if (state.hasProperty(BlockStateProperties.POWERED)) {
             return state.getValue(BlockStateProperties.POWERED) ? 5 : 0;

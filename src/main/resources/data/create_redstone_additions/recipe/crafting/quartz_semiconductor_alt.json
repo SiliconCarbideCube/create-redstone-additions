@@ -5,17 +5,17 @@
   ],
   "key": {
     "A": {
-      "item": "create:polished_rose_quartz"
+      "item": "create_redstone_additions:polished_cyan_quartz"
     },
     "B": {
       "item": "minecraft:gold_ingot"
     },
     "C": {
-      "item": "create_redstone_additions:polished_cyan_quartz"
+      "item": "create:polished_rose_quartz"
     }
   },
   "result": {
-    "item": "create_redstone_additions:quartz_semiconductor",
+    "id": "create_redstone_additions:quartz_semiconductor",
     "count": 2
   }
 }

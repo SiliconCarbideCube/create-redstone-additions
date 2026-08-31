@@ -5,6 +5,9 @@ import net.minecraft.world.item.Rarity;
 
 public class Verdigris extends Item {
     public Verdigris(Properties properties) {
-        super(properties.stacksTo(64).rarity(Rarity.COMMON));
+        super(properties
+                .stacksTo(64)
+                .rarity(Rarity.COMMON)
+        );
     }
 }

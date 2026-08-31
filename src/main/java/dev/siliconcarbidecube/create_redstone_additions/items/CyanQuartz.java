@@ -5,6 +5,9 @@ import net.minecraft.world.item.Rarity;
 
 public class CyanQuartz extends Item {
     public CyanQuartz(Properties properties) {
-        super(properties.stacksTo(64).rarity(Rarity.COMMON));
+        super(properties
+                .stacksTo(64)
+                .rarity(Rarity.COMMON)
+        );
     }
 }
