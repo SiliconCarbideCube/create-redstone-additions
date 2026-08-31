@@ -9,7 +9,6 @@ import dev.siliconcarbidecube.create_redstone_additions.init.ModTabs;
 import dev.siliconcarbidecube.create_redstone_additions.interacts.AddInteracts;
 import dev.siliconcarbidecube.create_redstone_additions.util.CustomPonderPlugin;
 import net.createmod.ponder.foundation.PonderIndex;
-import net.minecraft.world.item.crafting.RecipeManager;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -17,8 +16,6 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.neoforged.neoforge.client.event.RecipesUpdatedEvent;
-import net.neoforged.neoforge.client.event.RegisterClientCommandsEvent;
 import org.slf4j.Logger;
 
 @Mod(CreateRedstoneAdditions.MOD_ID)

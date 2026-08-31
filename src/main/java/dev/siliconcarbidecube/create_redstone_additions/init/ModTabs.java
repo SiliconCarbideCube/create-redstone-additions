@@ -1,6 +1,5 @@
 package dev.siliconcarbidecube.create_redstone_additions.init;
 
-import com.simibubi.create.AllCreativeModeTabs;
 import dev.siliconcarbidecube.create_redstone_additions.CreateRedstoneAdditions;
 import dev.siliconcarbidecube.create_redstone_additions.util.ResourcePathfinder;
 import net.minecraft.core.registries.Registries;
