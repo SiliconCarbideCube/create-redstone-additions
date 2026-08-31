@@ -67,4 +67,4 @@ Original code is by [Slimik42](https://modrinth.com/user/Slimik42). I, [SiliconC
 
 Feel free to forward your issues and suggestions to [Create: Redstone Additions Repository](https://github.com/SiliconCarbideCube/create_redstone_additions) Repository under the correct label. That means Forge issues will go to Forge label and Fabric issues will go to Fabric label.
 
-Licensed under AGPL 3.0 license. And yes, you can absolutely use this in a modpack. No need to ask permission! Just comply with the license.
+Licensed under AGPL 3.0 license. And yes, you can absolutely use this in a modpack. No need to ask permission! Just follow with the license.
