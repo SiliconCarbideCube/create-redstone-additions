@@ -7,7 +7,7 @@
 
 Create: Redstone Additions is an original mod by [Slimik42](https://modrinth.com/user/Slimik42) that introduces several redstone components designed to simplify some circuits. You can find the original project here at [Curseforge](https://www.curseforge.com/minecraft/mc-mods/create-redstone-additions).
 
-**NeoForge 1.21.1 will be available soon...**
+**Now on NeoForge!!!**
 
 # Mod Content:
 
