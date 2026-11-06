@@ -1,4 +1,5 @@
 {
+  "render_type": "minecraft:cutout",
   "ambientocclusion": false,
   "textures": {
     "top": "create_redstone_additions:block/inverter_on",

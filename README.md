@@ -68,3 +68,8 @@ Original code is by [Slimik42](https://modrinth.com/user/Slimik42). I, [SiliconC
 Feel free to forward your issues and suggestions to [Create: Redstone Additions Repository](https://github.com/SiliconCarbideCube/create_redstone_additions) Repository under the correct label. That means Forge issues will go to Forge label and Fabric issues will go to Fabric label.
 
 Licensed under AGPL 3.0 license. And yes, you can absolutely use this in a modpack. No need to ask permission! Just follow with the license.
+
+## Running tests
+Requires JDK 21. `./gradlew test` boots one in-memory NeoForge server with Create and this mod, then runs the JUnit 5 tests in `src/test/java`.
+Tests use `TestArea` (an isolated, force-loaded cell in a frozen superflat world) for blocks, redstone signals, fake players, ticks and drops.
+`./gradlew build` runs the tests too; the release jar contains only `src/main`.

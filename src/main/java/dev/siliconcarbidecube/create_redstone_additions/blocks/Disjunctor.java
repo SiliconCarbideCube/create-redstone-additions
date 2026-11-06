@@ -14,6 +14,7 @@ import org.jetbrains.annotations.Nullable;
 public class Disjunctor extends AbstractCustomDiodeBlock {
     public Disjunctor(Properties properties) {
         super(Disjunctor::new);
+        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(POWERED, false));
     }
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {

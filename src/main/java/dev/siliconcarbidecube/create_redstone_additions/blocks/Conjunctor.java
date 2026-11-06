@@ -11,7 +11,6 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.ticks.TickPriority;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -28,7 +27,7 @@ public class Conjunctor extends AbstractCustomDiodeBlock {
 
     public @NotNull BlockState getStateForPlacement(BlockPlaceContext ctx) {
         BlockState state = super.getStateForPlacement(ctx);
-        return state.setValue(POWER_TYPE, (shouldTurnOn(ctx.getLevel(), ctx.getClickedPos(), state)) ? 3 : 0);
+        return state.setValue(POWER_TYPE, this.getInputSignal(ctx.getLevel(), ctx.getClickedPos(), state));
     }
 
     public boolean canConnectRedstone(BlockState state, BlockGetter level, BlockPos pos, @Nullable Direction direction) {
@@ -54,7 +53,7 @@ public class Conjunctor extends AbstractCustomDiodeBlock {
     }
 
     protected boolean shouldTurnOn(Level p_52502_, BlockPos p_52503_, BlockState p_52504_) {
-        return this.getInputSignal(p_52502_, p_52503_, p_52504_) == 3;
+        return this.getInputSignal(p_52502_, p_52503_, p_52504_) > 0;
     }
 
     protected int getInputSignal(Level p_52544_, BlockPos p_52545_, BlockState p_52546_) {
@@ -64,17 +63,29 @@ public class Conjunctor extends AbstractCustomDiodeBlock {
         BlockPos blockposRight = p_52545_.relative(directionRight);
         BlockPos blockposLeft = p_52545_.relative(directionLeft);
         if ((p_52544_.getSignal(blockposRight, directionRight) >= 1) && (p_52544_.getSignal(blockposLeft, directionLeft) >= 1)) {
-            p_52544_.setBlock(p_52545_, p_52546_.setValue(POWER_TYPE, 3), 2);
             return 3;
         } else {
             if (p_52544_.getSignal(blockposLeft, directionLeft) >= 1) {
-                p_52544_.setBlock(p_52545_, p_52546_.setValue(POWER_TYPE, 2), 2);
                 return 2;
             } else if (p_52544_.getSignal(blockposRight, directionRight) >= 1) {
-                p_52544_.setBlock(p_52545_, p_52546_.setValue(POWER_TYPE, 1), 2);
                 return 1;
             }
             return 0;
+        }
+    }
+
+    @Override
+    public void neighborChanged(BlockState state, Level level, BlockPos pos,
+                                Block block, BlockPos fromPos, boolean isMoving) {
+        if (!state.canSurvive(level, pos)) {
+            super.neighborChanged(state, level, pos, block, fromPos, isMoving);
+            return;
+        }
+        if (!level.isClientSide && !this.isLocked(level, pos, state)) {
+            int powerType = this.getInputSignal(level, pos, state);
+            if (state.getValue(POWER_TYPE) != powerType) {
+                level.setBlock(pos, state.setValue(POWER_TYPE, powerType), 2);
+            }
         }
     }
 
@@ -84,26 +95,8 @@ public class Conjunctor extends AbstractCustomDiodeBlock {
             int flag1 = this.getInputSignal(p_221066_, p_221067_, p_221065_);
             if (flag != flag1) {
                 p_221066_.setBlock(p_221067_, p_221065_.setValue(POWER_TYPE, flag1), 2);
-            } else {
-                p_221066_.scheduleTick(p_221067_, this, this.getDelay(p_221065_), TickPriority.VERY_HIGH);
             }
 
-        }
-    }
-
-    protected void checkTickOnNeighbor(Level p_52577_, BlockPos p_52578_, BlockState p_52579_) {
-        if (!this.isLocked(p_52577_, p_52578_, p_52579_)) {
-            int flag = p_52579_.getValue(POWER_TYPE);
-            int flag1 = this.getInputSignal(p_52577_, p_52578_, p_52579_);
-            if (flag != flag1 && !p_52577_.getBlockTicks().willTickThisTick(p_52578_, this)) {
-                TickPriority tickpriority = TickPriority.HIGH;
-                if (this.shouldPrioritize(p_52577_, p_52578_, p_52579_)) {
-                    tickpriority = TickPriority.EXTREMELY_HIGH;
-                } else if (flag == 3) {
-                    tickpriority = TickPriority.VERY_HIGH;
-                }
-                p_52577_.scheduleTick(p_52578_, this, this.getDelay(p_52579_), tickpriority);
-            }
         }
     }
 

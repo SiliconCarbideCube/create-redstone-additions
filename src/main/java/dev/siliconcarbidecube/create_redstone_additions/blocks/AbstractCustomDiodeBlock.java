@@ -1,6 +1,7 @@
 package dev.siliconcarbidecube.create_redstone_additions.blocks;
 
 import com.mojang.serialization.MapCodec;
+import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import dev.siliconcarbidecube.create_redstone_additions.util.LightLevels;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -18,7 +19,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Function;
 
-public abstract class AbstractCustomDiodeBlock extends DiodeBlock {
+public abstract class AbstractCustomDiodeBlock extends DiodeBlock implements IWrenchable {
     private final MapCodec<? extends DiodeBlock> CODEC;
     protected static final Properties DEFAULT_PROPERTIES =
             Properties.of()
@@ -64,6 +65,15 @@ public abstract class AbstractCustomDiodeBlock extends DiodeBlock {
                 x, y, z,
                 0.0D, 0.0D, 0.0D
         );
+    }
+
+    @Override
+    protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving) {
+        if (oldState.is(this) && oldState.getValue(FACING) != state.getValue(FACING)) {
+            this.updateNeighborsInFront(level, pos, oldState);
+            level.neighborChanged(pos, this, pos);
+        }
+        super.onPlace(state, level, pos, oldState, isMoving);
     }
 
     @Override

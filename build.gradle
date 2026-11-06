@@ -50,6 +50,11 @@ neoForge {
             sourceSet(sourceSets.main)
         }
     }
+
+    unitTest {
+        enable()
+        testedMod = mods."${mod_id}"
+    }
 }
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
@@ -80,6 +85,13 @@ dependencies {
     // JEI
     runtimeOnly("mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}")
 
+    // Tests
+    testImplementation("org.junit.jupiter:junit-jupiter:${junit_version}")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+}
+
+tasks.named('test', Test) {
+    useJUnitPlatform()
 }
 
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {

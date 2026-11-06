@@ -21,6 +21,7 @@ public class Crossroad extends AbstractCustomDiodeBlock {
     public static final IntegerProperty POWER = BlockStateProperties.POWER;
     public static final IntegerProperty FLANK_POWER = IntegerProperty.create("flank_power", 0, 15);
     public static final IntegerProperty MODEL_TYPE = IntegerProperty.create("model_type", 0, 3);
+    private @Nullable BlockPos readingPos;
 
     public Crossroad(Properties properties) {
         super(Crossroad::new);
@@ -32,7 +33,10 @@ public class Crossroad extends AbstractCustomDiodeBlock {
 
     public @NotNull BlockState getStateForPlacement(BlockPlaceContext ctx) {
         BlockState state = super.getStateForPlacement(ctx);
-        return state.setValue(POWER, this.getInputSignal(ctx.getLevel(), ctx.getClickedPos(), state));
+        int power = this.getInputSignal(ctx.getLevel(), ctx.getClickedPos(), state);
+        int flankPower = this.getFlankInputSignal(ctx.getLevel(), ctx.getClickedPos(), state);
+        int modelType = power > 0 && flankPower > 0 ? 3 : power > 0 ? 2 : flankPower > 0 ? 1 : 0;
+        return state.setValue(POWER, power).setValue(FLANK_POWER, flankPower).setValue(MODEL_TYPE, modelType);
     }
 
     public boolean canConnectRedstone(BlockState state, BlockGetter level, BlockPos pos, @Nullable Direction direction) {
@@ -59,6 +63,11 @@ public class Crossroad extends AbstractCustomDiodeBlock {
         }
     }
 
+    @Override
+    protected int getDirectSignal(BlockState blockState, BlockGetter getter, BlockPos pos, Direction dir) {
+        return pos.equals(this.readingPos) ? 0 : Math.max(super.getDirectSignal(blockState, getter, pos, dir) - 1, 0);
+    }
+
     protected int getOutputSignal(BlockGetter getter, BlockPos pos, BlockState blockState) {
         return blockState.getValue(POWER);
     }
@@ -68,7 +77,7 @@ public class Crossroad extends AbstractCustomDiodeBlock {
     }
 
     protected boolean shouldTurnOn(Level level, BlockPos pos, BlockState state) {
-        return state.getValue(POWER) > 0;
+        return this.getInputSignal(level, pos, state) > 0 || this.getFlankInputSignal(level, pos, state) > 0;
     }
 
     protected int getInputSignal(Level level, BlockPos pos, BlockState state) {
@@ -103,12 +112,21 @@ public class Crossroad extends AbstractCustomDiodeBlock {
                 : i;
     }
 
+    private int getInputSignalIgnoringOwnOutput(Level level, BlockPos pos, BlockState state, boolean flank) {
+        this.readingPos = pos;
+        try {
+            return flank ? this.getFlankInputSignal(level, pos, state) : this.getInputSignal(level, pos, state);
+        } finally {
+            this.readingPos = null;
+        }
+    }
+
     public void tick(BlockState p_221065_, ServerLevel p_221066_, BlockPos p_221067_, RandomSource p_221068_) {
         if (!this.isLocked(p_221066_, p_221067_, p_221065_)) {
             int flag = p_221065_.getValue(POWER);
-            int flag1 = this.getInputSignal(p_221066_, p_221067_, p_221065_);
+            int flag1 = this.getInputSignalIgnoringOwnOutput(p_221066_, p_221067_, p_221065_, false);
             int flankFlag = p_221065_.getValue(FLANK_POWER);
-            int flankFlag1 = this.getFlankInputSignal(p_221066_, p_221067_, p_221065_);
+            int flankFlag1 = this.getInputSignalIgnoringOwnOutput(p_221066_, p_221067_, p_221065_, true);
             if (flankFlag != 0 && flankFlag1 == 0) {
                 p_221066_.setBlock(p_221067_, p_221065_.setValue(FLANK_POWER, 0), 2);
             } else {
@@ -182,8 +200,12 @@ public class Crossroad extends AbstractCustomDiodeBlock {
     @Override
     public void neighborChanged(BlockState state, Level level, BlockPos pos,
                                 Block block, BlockPos fromPos, boolean isMoving) {
+        if (!state.canSurvive(level, pos)) {
+            super.neighborChanged(state, level, pos, block, fromPos, isMoving);
+            return;
+        }
         if (!level.isClientSide && !this.isLocked(level, pos, state)) {
-            int newPower = this.getInputSignal(level, pos, state);
+            int newPower = this.getInputSignalIgnoringOwnOutput(level, pos, state, false);
             int oldPower = state.getValue(POWER);
             if (oldPower != newPower) {
                 state = state.setValue(POWER, newPower);
@@ -191,7 +213,7 @@ public class Crossroad extends AbstractCustomDiodeBlock {
                 this.updateNeighborsInFront(level, pos, state);
             }
 
-            int newFlank = this.getFlankInputSignal(level, pos, state);
+            int newFlank = this.getInputSignalIgnoringOwnOutput(level, pos, state, true);
             int oldFlank = state.getValue(FLANK_POWER);
             if (oldFlank != newFlank) {
                 state = state.setValue(FLANK_POWER, newFlank);
