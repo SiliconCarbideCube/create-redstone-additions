@@ -23,6 +23,8 @@ public class CreateRedstoneAdditions {
     public static final String MOD_ID = "create_redstone_additions";
     private static final Logger LOGGER = LogUtils.getLogger();
 
+//    public static final Registrate REGISTRATE = Registrate.create(MOD_ID);
+
     public static final NonNullSupplier<Registrate> REGISTRATE_SUPPLIER = NonNullSupplier.lazy(() -> Registrate.create(MOD_ID));
     public static final Registrate REGISTRATE = REGISTRATE_SUPPLIER.get();
 

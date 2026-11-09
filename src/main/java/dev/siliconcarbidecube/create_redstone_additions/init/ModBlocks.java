@@ -5,6 +5,7 @@ import com.tterrag.registrate.util.entry.BlockEntry;
 import dev.siliconcarbidecube.create_redstone_additions.CreateRedstoneAdditions;
 import dev.siliconcarbidecube.create_redstone_additions.blocks.*;
 
+
 public class ModBlocks {
     public static final Registrate REGISTRATE = CreateRedstoneAdditions.REGISTRATE.defaultCreativeTab(ModTabs.BLOCKS_TAB_KEY);
 
